@@ -1,0 +1,62 @@
+<html>
+    <head>
+        <title>ChunBo</title>
+               
+        <link rel="icon" type="image/x-icon" href="chunbo.png">
+        <link rel="stylesheet" href="https://cdn.rawgit.com/Chalarangelo/mini.css/v2.3.7/dist/mini-default.min.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="main.css"> 
+    </head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.js"></script>
+    
+    <body ng-app="myApp" >
+        <header class="sticky">
+            <span>>_</span>
+            <a href="#" class="logo" style="color:darkseagreen;">CHUNBO</a>
+        </header>
+        <main>
+            <div class="container margintop10" ng-controller="mainController">
+                
+                <div class="row ">
+                    <div class="col-sm-6 col-md-3 col-lg-2 col-sm-offset-3 col-lg-offset-5">
+                        <img class="img200-200" src="chunbo.png" alt="chunboSearch" >
+                    </div>
+                </div>
+                <div class="row fluid" >
+                    
+                    <div class="col-sm-8 col-md-5 col-lg-5 col-lg-offset-3">
+                        <input id="search" type="text" ng-model="searchtext.content" placeholder="Search...">
+                    </div>
+                    <div class="col-sm-4 col-md-3 col-lg-1">
+                        <input class="primary" type="submit" ng-click="search(searchtext.content)" value="Search!"/>
+                    </div>
+
+                    
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-md-4 col-lg-2 col-lg-offset-2">{{ searchResult.resultTotal }}</div>
+                    <div class="col-sm-6 col-md-4 col-lg-2 ">{{ searchResult.searchTime }}</div>
+                </div>
+                <div class="row bottom" style="margin-top: 5px">
+                    <div class="col-sm-11 col-md-10 col-lg-8 col-lg-offset-2 resultInfo" ng-repeat="result in response.hits.hits"> 
+                        <a href="{{ result._source.url }}" style="font-size:24;">{{ result._source.title }}</a><br>
+                        <a href="{{ result._source.url }}" style="color:darkslategray;">{{ result._source.url }}</a>
+                        <div class="col-sm-10 col-md-9 col-lg-10" sytle="padding-left:20px;">
+                            <div class="row contentInfo" ng-repeat="highlight in result.highlight.content.slice(0, 3)">
+                                <div style="font-size:12; opacity:0.9;" ng-bind-html="highlight"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer class="sticky" >
+            <p>&copy; 2018 Ian Tsai | <a href="#">About</a> | <a href="#">Terms of use</a></p>
+        </footer>
+    </body>
+    <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="mainController.js" ></script>
+</html>
