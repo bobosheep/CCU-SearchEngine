@@ -30,7 +30,7 @@
                         <input id="search" type="text" ng-model="searchtext.content" placeholder="Search...">
                     </div>
                     <div class="col-sm-4 col-md-3 col-lg-1">
-                        <input class="primary" type="submit" ng-click="search(searchtext.content)" value="Search!"/>
+                        <input class="primary" type="submit" ng-click="search(searchtext.content, 1)" value="Search!"/>
                     </div>
 
                     
@@ -47,6 +47,18 @@
                             <div class="row contentInfo" ng-repeat="highlight in result.highlight.content.slice(0, 3)">
                                 <div style="font-size:12; opacity:0.9;" ng-bind-html="highlight"></div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-10 col-md-8 col-lg-6 col-lg-offset-3">
+                        <div class="row">
+                            <div class="col-sm-1 col-md-1 col-lg-1 page" 
+                                ng-click="search(searchtext.content, page.num)"  ng-if="page.display" 
+                                ng-repeat="page in searchPages">
+                                {{ page.num }}
+                            </div>
+                            
                         </div>
                     </div>
                 </div>

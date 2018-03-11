@@ -22,37 +22,81 @@ app.controller('mainController', ['$scope','$http', '$sce', function($scope, $ht
       "fields" : {
           "content" : {}
       }
-    }
+    },
+    "from": 10
   }
-  console.log($scope.query);
 
-  $scope.highlightInfo = '';
+  $scope.searchPages = [{
+      "num":1,
+      "display": false
+    }, {
+      "num":2,
+      "display": false
+    }, {
+      "num":3,
+      "display": false
+    }, {
+      "num":4,
+      "display": false
+    }, {
+      "num":5,
+      "display": false
+    }, {
+      "num":6,
+      "display": false
+    }, {
+      "num":7,
+      "display": false
+    }, {
+      "num":8,
+      "display": false
+    }, {
+      "num":9,
+      "display": false
+    } , {
+      "num":10,
+      "display": false
+  }];
+
   $scope.searchResult = {
     "searchTime" : '',
     "resultTotal" : ''
   }
   
   $scope.response = ''
-  $scope.search = function(val){
+  $scope.search = function(val, page){
     $scope.body.query.match.content = val;
-    console.log($scope.query);
-    let res = $http.post($scope.searchHost, $scope.body,{
-      headers: {
-        'Access-Control-Allow-Origin':'*'
-      },  
-  }).then(function(response){
-        console.log(response.data);
+    $scope.body.from = (page - 1) * 10;
+    let total = 0;
+    $scope.response = $http.post($scope.searchHost, $scope.body,{
+        headers: {
+          'Access-Control-Allow-Origin':'*'
+        },  
+      }).then(function(response){
+        //console.log(response.data);
         $scope.response = response.data;
-        $scope.searchResult.resultTotal = 'Approximately ' + $scope.response.hits.total  + ' results' 
-      
+        total = $scope.response.hits.total;
+        $scope.searchResult.resultTotal = 'Total ' + total  + ' results' 
+        $scope.searchPages.forEach(function(p, i){
+          if((p.num - 1) * 10 < total){
+            p.display = true;
+            //console.log(p);
+          }
+          else{
+            p.display = false;
+          }
+        });
         $scope.searchResult.searchTime = 'Search Time : ' + $scope.response.took+ ' ms'
         //$scope.highlightInfo = $scope.response.hits.hits.highlight.content.for;
-        return response.data;
+        return response.data.hits;
       })
       .catch(function (error) {
-      console.log(error);
+        console.log(error);
       });
-    console.log(res);
-    ///$scope.$apply();
+    //console.log(res);
+    
   }
+
+
+
 }]);
