@@ -97,6 +97,4 @@ app.controller('mainController', ['$scope','$http', '$sce', function($scope, $ht
     
   }
 
-
-
 }]);
