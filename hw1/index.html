@@ -14,7 +14,7 @@
     <body ng-app="myApp" >
         <header class="sticky">
             <span>>_</span>
-            <a href="#" class="logo" style="color:darkseagreen;">CHUNBO</a>
+            <a href="#" class="logo" style="color:lightgreen;">CHUNBO</a>
         </header>
         <main>
             <div class="container margintop10" ng-controller="mainController">
@@ -30,16 +30,24 @@
                         <input id="search" type="text" ng-model="searchtext.content" placeholder="Search...">
                     </div>
                     <div class="col-sm-4 col-md-3 col-lg-1">
-                        <input class="primary" type="submit" ng-click="search(searchtext.content, 1)" value="Search!"/>
+                        <span class="tooltip" aria-label="Go search okay?">
+                            <input class="primary" type="submit" ng-click="search(searchHost.all, searchtext.content, 1)" value="Search!"/>
+                        </span>
                     </div>
 
                     
                 </div>
-                <div class="row">
-                    <div class="col-sm-6 col-md-4 col-lg-2 col-lg-offset-2">{{ searchResult.resultTotal }}</div>
-                    <div class="col-sm-6 col-md-4 col-lg-2 ">{{ searchResult.searchTime }}</div>
+                <div class="row chooseBar" ng-if="searchHost.show">
+                    <div class="col-sm-4 col-md-3 col-lg-1 col-lg-offset-3 class" ng-if="searchHost.show" ng-click="search(searchHost.all, searchtext.content, 1)">All</div>
+                    <div class="col-sm-4 col-md-3 col-lg-1 class" ng-if="searchHost.show" ng-click="search(searchHost.news, searchtext.content, 1)">Ettoday</div>
+                    <div class="col-sm-4 col-md-3 col-lg-1 class" ng-if="searchHost.show" ng-click="search(searchHost.facebook, searchtext.content, 1)">Facebook</div>
                 </div>
-                <div class="row bottom" style="margin-top: 5px">
+                <div class="row" style="margin-top:8px;">
+                    <div class="col-sm-6 col-md-4 col-lg-2 col-lg-offset-2"><em>{{ searchResult.resultTotal }}</em></div>
+                    <div class="col-sm-6 col-md-4 col-lg-2 "><em>{{ searchResult.searchTime }}</em></div>
+                </div>
+                
+                <div class="row bottom" >
                     <div class="col-sm-11 col-md-10 col-lg-8 col-lg-offset-2 resultInfo" ng-repeat="result in response.hits.hits"> 
                         <a href="{{ result._source.url }}" style="font-size:24;">{{ result._source.title }}</a><br>
                         <a href="{{ result._source.url }}" style="color:darkslategray;">{{ result._source.url }}</a>
@@ -53,8 +61,9 @@
                 <div class="row">
                     <div class="col-sm-10 col-md-8 col-lg-6 col-lg-offset-3">
                         <div class="row">
+                            <div class="col-sm-2 col-md-1 col-lg-1" ng-if="searchPages[0].display">page</div>
                             <div class="col-sm-1 col-md-1 col-lg-1 page" 
-                                ng-click="search(searchtext.content, page.num)"  ng-if="page.display" 
+                                ng-click="search(page.url, searchtext.content, page.num)"  ng-if="page.display" 
                                 ng-repeat="page in searchPages">
                                 {{ page.num }}
                             </div>
