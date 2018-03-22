@@ -2,7 +2,7 @@
     <head>
         <title>ChunBo</title>
                
-        <link rel="icon" type="image/x-icon" href="chunbo.png">
+        <link rel="icon" type="image/x-icon" href="./img/chunbo3.png">
         <link rel="stylesheet" href="https://cdn.rawgit.com/Chalarangelo/mini.css/v2.3.7/dist/mini-default.min.css">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta charset="utf-8">
@@ -19,15 +19,23 @@
         <main>
             <div class="container margintop10" ng-controller="mainController">
                 
-                <div class="row ">
-                    <div class="col-sm-6 col-md-3 col-lg-2 col-sm-offset-3 col-lg-offset-5">
-                        <img class="img200-200" src="chunbo.png" alt="chunboSearch" >
+                <div class="row " style="margin-top: 25px;
+                margin-bottom: 25px;
+                padding-left: 21px;">
+                    <div class="col-sm-4 col-md-3 col-lg-1  col-lg-offset-4 " >
+                        <!--img class="img200-200" src="chunbo3.png" alt="chunboSearch" -->
+                        <img class="img100-100" src="./img/chunbo3.png" alt="chunboSearch" >
+                    </div>
+                    <div class="col-sm-6 col-md-3 col-lg-3  chunbo-name">
+                        ChunBo
                     </div>
                 </div>
                 <div class="row fluid" >
                     
                     <div class="col-sm-8 col-md-5 col-lg-5 col-lg-offset-3">
-                        <input id="search" type="text" ng-model="searchtext.content" placeholder="Search...">
+                        <input id="search" type="text"
+                                ng-keyup="$event.keyCode == 13 ? search(searchHost.all, searchtext.content, 1) : consol.log($event);" 
+                                ng-model="searchtext.content" placeholder="Search...">
                     </div>
                     <div class="col-sm-4 col-md-3 col-lg-1">
                         <span class="tooltip" aria-label="Go search okay?">
@@ -38,9 +46,9 @@
                     
                 </div>
                 <div class="row chooseBar" ng-if="searchHost.show">
-                    <div class="col-sm-4 col-md-3 col-lg-1 col-lg-offset-3 class" ng-if="searchHost.show" ng-click="search(searchHost.all, searchtext.content, 1)">All</div>
-                    <div class="col-sm-4 col-md-3 col-lg-1 class" ng-if="searchHost.show" ng-click="search(searchHost.news, searchtext.content, 1)">Ettoday</div>
-                    <div class="col-sm-4 col-md-3 col-lg-1 class" ng-if="searchHost.show" ng-click="search(searchHost.facebook, searchtext.content, 1)">Facebook</div>
+                    <div class="col-sm-3 col-md-3 col-lg-1 col-lg-offset-3 class" ng-if="searchHost.show" ng-click="search(searchHost.all, searchtext.content, 1)">All</div>
+                    <div class="col-sm-3 col-md-3 col-lg-1 class" ng-if="searchHost.show" ng-click="search(searchHost.news, searchtext.content, 1)">Ettoday</div>
+                    <div class="col-sm-3 col-md-3 col-lg-1 class" ng-if="searchHost.show" ng-click="search(searchHost.facebook, searchtext.content, 1)">Facebook</div>
                 </div>
                 <div class="row" style="margin-top:8px;">
                     <div class="col-sm-6 col-md-4 col-lg-2 col-lg-offset-2"><em>{{ searchResult.resultTotal }}</em></div>

@@ -1,11 +1,13 @@
-.img200-200{
+.img100-100{
     border-radius: 50;
-    width: 200px;
-    height: 200px;
+    width: 100px;
+    height: 100px;
+    float: left;
+    clear: both;
 }
-.img200-200:hover{
+.img100-100:hover{
     transform: scale(1.05);
-    transition: .2s;
+    transition: .3s;
     box-shadow: #00273f;
 }
 .margintop10{
@@ -52,11 +54,9 @@ a:visited{
     color: rgb(255, 13, 13);
 }
 body{
-    background: #f0f9ff; /* Old browsers */
-    background: -moz-linear-gradient(top, #f0f9ff 0%, #cbebff 73%, #a1dbff 100%); /* FF3.6-15 */
-    background: -webkit-linear-gradient(top, #f0f9ff 0%,#cbebff 73%,#a1dbff 100%); /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(to top, #f0f9ff 0%,#cbebff 73%,#a1dbff 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f0f9ff', endColorstr='#a1dbff',GradientType=0 );
+    background-image: url('./img/bg2.jpg');
+    background-size: cover;
+    background-attachment: fixed;
 }
 input:hover{
     transition: .3s;
@@ -88,13 +88,14 @@ input:hover{
     transition: .2s;   
     border-bottom: rgba(34, 240, 255, 0.911); 
     background-color: rgb(76, 0, 218);
+    
 }
 
 main {
     min-height: 83%;
 }
 footer {
-    position: inherit;
+    position: sticky;
     bottom: 0px;
     width:98%;
     padding: 7px 13px;
@@ -106,7 +107,7 @@ footer p {
 }
 @media only screen and (max-width: 600px) {
     header{
-        width: 100%;
+        width: 100vw;
     }
 }
 
@@ -114,4 +115,10 @@ footer p {
     border-style: solid;
     border-width: 0 0 2 0;
     border-color: rgb(76, 0, 218);
+}
+
+.chunbo-name{
+    font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 60;
+    color: rgb(17, 6, 48);
 }

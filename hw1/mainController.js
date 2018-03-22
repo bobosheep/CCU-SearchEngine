@@ -12,7 +12,7 @@ app.controller('mainController', ['$scope','$http', '$sce', function($scope, $ht
   $scope.searchHost = {
     "show" : false,
     "all" :'http://localhost:9200/_search',
-    "news" : 'http://localhost:9200/test/_search',
+    "news" : 'http://localhost:9200/news/_search',
     "facebook" :'http://localhost:9200/facebook/_search'
   }
   //query body
@@ -20,7 +20,7 @@ app.controller('mainController', ['$scope','$http', '$sce', function($scope, $ht
     "query":{
       "match" :{
         "content":  ""
-      }    
+      }
     },
     "highlight": {
       "pre_tags" : ["<span class='highlight'>"],
@@ -29,7 +29,7 @@ app.controller('mainController', ['$scope','$http', '$sce', function($scope, $ht
           "content" : {}
       }
     },
-    "from": 10
+    "from": 1
   }
 
   $scope.searchPages = [{
@@ -88,6 +88,7 @@ app.controller('mainController', ['$scope','$http', '$sce', function($scope, $ht
       return;
     }
     $scope.body.query.match.content = val;
+
     $scope.body.from = (page - 1) * 10;
     let total = 0;
 
@@ -113,8 +114,7 @@ app.controller('mainController', ['$scope','$http', '$sce', function($scope, $ht
           }
         });
         ///search time show
-        $scope.searchResult.searchTime = 'Search Time : ' + $scope.response.took+ ' ms'
-        //$scope.highlightInfo = $scope.response.hits.hits.highlight.content.for;
+        $scope.searchResult.searchTime = 'Search Time : ' + $scope.response.took+ ' ms';
         
         return response.data.hits;
       })
