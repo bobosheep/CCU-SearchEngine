@@ -8,6 +8,7 @@
         <meta charset="utf-8">
         <link rel="stylesheet" href="main.css"> 
     </head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.js"></script>
     
@@ -19,9 +20,7 @@
         <main>
             <div class="container margintop10" ng-controller="mainController">
                 
-                <div class="row " style="margin-top: 25px;
-                margin-bottom: 25px;
-                padding-left: 21px;">
+                <div class="row mylogobar">
                     <div class="col-sm-4 col-md-3 col-lg-1  col-lg-offset-4 " >
                         <!--img class="img200-200" src="chunbo3.png" alt="chunboSearch" -->
                         <img class="img100-100" src="./img/chunbo3.png" alt="chunboSearch" >
@@ -30,7 +29,7 @@
                         ChunBo
                     </div>
                 </div>
-                <div class="row fluid" >
+                <div class="row fluid mysearchbar" >
                     
                     <div class="col-sm-8 col-md-5 col-lg-5 col-lg-offset-3">
                         <input id="search" type="text"

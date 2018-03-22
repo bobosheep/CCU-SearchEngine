@@ -122,3 +122,34 @@ footer p {
     font-size: 60;
     color: rgb(17, 6, 48);
 }
+
+.mylogobar{
+    margin-top: 25px;
+    margin-bottom: 25px;
+    padding-left: 21px;
+    -webkit-animation: mymove1 1s 1 ease-out; /* Chrome, Safari, Opera */
+    animation: mymove1 1s 1 ease-out;
+}
+
+.mysearchbar{
+    -webkit-animation: mymove2 1s 1 ease-out; /* Chrome, Safari, Opera */
+    animation: mymove2 1s 1 ease-out;
+}
+
+@-webkit-keyframes mymove1{
+    from{opacity: 0;padding-left: 0px;}
+    to{opacity: 0.8;padding-left: 21px;}
+}
+@keyframes mymove1{
+    from{opacity: 0;padding-left: 0px;}
+    to{opacity: 0.8;padding-left: 21px;}
+}
+
+@-webkit-keyframes mymove2{
+    from{opacity: 0;padding-left: 21px;}
+    to{opacity: 0.8;padding-left: 0px;}
+}
+@keyframes mymove2{
+    from{opacity: 0;padding-left: 21px;}
+    to{opacity: 0.8;padding-left: 0px;}
+}
