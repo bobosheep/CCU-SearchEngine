@@ -173,4 +173,103 @@ beautifulsoup沒辦法給maintext
 ***crawling proxy:***
 URL + option -> proxy -> pagerecord
 
+----
+## 3/13(報告)
 
+*	shpinx (search kernel)
+*	solr (search kernel)
+
+*	MongoDB
+---
+## 3/20
+	
+link record
+*	src: www.ccu.edu.tw
+*	target: www.cs.ccu.edu.tw
+*	anchor: 中正資工
+
+parser抓完 maintext extraction、content time、representative image會丟到pase record
+parser 還要做type detection、classification
+
+爬蟲rule: Breadthfirst Search
+
+進Url pool manager 前要做URL preprocessing
+*	URL preprocessing
+	*	uniquefy
+	*	what is new(this is important)
+		*	**bloom filter**(multiple hashing)
+		*	merge
+		*	in-memory hash-table
+	*	spam site detection
+	*	porn site detection
+	
+### Homework1.3
+*	elasticSearch
+*	和以下至少1個，做compare
+	*	MongoDB(NoSQL查詢)
+	*	Sphinx
+	*	Solr (第二名)
+*	Data 5M個
+
+---
+# 3/22
+### what's new
+*	S: Seen
+	*	IP + Url
+*	U: Unknown
+*	U - S == N
+	*	找差集
+		*	hash table for S
+		*	轉成MD5
+	*	S + N -> S
+*	P: Pool (Urls to be fetched)
+*	C: Crawled 
+*	F: Failed
+
+### Bloomfilter
+*	choose indepentent hash function
+*	approximation algorithm
+	*	b = Hash table size / Num of element
+	*	collision Probability = 1 / (b ^ k)
+
+----
+# 3/29
+##	Homework1.3
+*	Demo on 4/10
+
+### Bot Master
+*	termination problem
+	*	http://robotmustdiehere.org/ (不能連上QQ)
+	*	URL 不一樣但內容一樣
+	*	main contet extraction
+		*	text
+		*	image
+		*	publish time
+*	filter
+	*	spam dectection/filter
+	*	porn filter
+*	ranking
+	*	sute score
+		*	on the fly(online)
+		*	offline
+*	scheduling
+*	robot.txt
+	*	black/white list
+	*	rule
+*	graceful
+	*	Ip based
+*	traffic control
+
+
+爬蟲、洗資料、挖礦、語系分類/判斷
+
+***擋爬蟲解決方法***
+*	Tor 洋蔥網路 深網
+*	proxy
+*	dynamic ip
+
+***擋爬蟲方法***
+*	cookie
+*	block ip
+*	bot 行為偵測
+---
