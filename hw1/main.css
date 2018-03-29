@@ -65,15 +65,21 @@ input:hover{
 .primary:hover{
     background-color: rgba(8, 8, 226, 0.685);
 }
+.pageborder{
+    border-style: solid;
+    border-radius: 5px;
+    border-width: 2;
+    border-color: rgb(71, 142, 214);
+}
 .page{
-    border-radius: 8px;
+    font-size: 16px;
     cursor:pointer;
     text-align: center;
 }
 .page:hover{
     color: white;
     transition: .2s;    
-    background-color: rgba(0, 0, 0, 0.459)
+    background-color: rgba(71, 142, 214, 0.8)
 }
 
 .class{
@@ -85,9 +91,9 @@ input:hover{
 
 .class:hover{
     color: white;
-    transition: .2s;   
+    transition: .3s;   
     border-bottom: rgba(34, 240, 255, 0.911); 
-    background-color: rgb(76, 0, 218);
+    background-color: rgb(123, 52, 255);
     
 }
 
@@ -120,7 +126,8 @@ footer p {
 .chunbo-name{
     font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
     font-size: 60;
-    color: rgb(17, 6, 48);
+    
+    color: midnightblue ;  
 }
 
 .mylogobar{

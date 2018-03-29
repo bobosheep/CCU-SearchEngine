@@ -116,6 +116,22 @@ app.controller('mainController', ['$scope','$http', '$sce', function($scope, $ht
         ///search time show
         $scope.searchResult.searchTime = 'Search Time : ' + $scope.response.took+ ' ms';
         
+        console.log(url);
+        console.log($scope.searchHost);
+        if(url == $scope.searchHost.all){
+          $('#all').css({"background-color":"rgb(72, 0, 218)", "color":"white"});
+          $('#news').css({"background-color":"white", "color":"rgb(0, 68, 95)"});
+          $('#facebook').css({"background-color":"white", "color":"rgb(0, 68, 95)"});
+        } else if(url == $scope.searchHost.news){
+          $('#all').css({"background-color":"white", "color":"rgb(0, 68, 95)"});
+          $('#news').css({"background-color":"rgb(72, 0, 218)", "color":"white"});
+          $('#facebook').css({"background-color":"white", "color":"rgb(0, 68, 95)"});
+        } else if(url == $scope.searchHost.facebook){
+          $('#all').css({"background-color":"white", "color":"rgb(0, 68, 95)"});
+          $('#news').css({"background-color":"white", "color":"rgb(0, 68, 95)"});
+          $('#facebook').css({"background-color":"rgb(72, 0, 218)", "color":"white"});
+        }
+
         return response.data.hits;
       })
       .catch(function (error) {

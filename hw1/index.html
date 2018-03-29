@@ -20,7 +20,7 @@
         <main>
             <div class="container margintop10" ng-controller="mainController">
                 
-                <div class="row mylogobar">
+                <div class="row mylogobar" style = "padding-top:10px;">
                     <div class="col-sm-4 col-md-3 col-lg-1  col-lg-offset-4 " >
                         <!--img class="img200-200" src="chunbo3.png" alt="chunboSearch" -->
                         <img class="img100-100" src="./img/chunbo3.png" alt="chunboSearch" >
@@ -45,9 +45,9 @@
                     
                 </div>
                 <div class="row chooseBar" ng-if="searchHost.show">
-                    <div class="col-sm-3 col-md-3 col-lg-1 col-lg-offset-3 class" ng-if="searchHost.show" ng-click="search(searchHost.all, searchtext.content, 1)">All</div>
-                    <div class="col-sm-3 col-md-3 col-lg-1 class" ng-if="searchHost.show" ng-click="search(searchHost.news, searchtext.content, 1)">Ettoday</div>
-                    <div class="col-sm-3 col-md-3 col-lg-1 class" ng-if="searchHost.show" ng-click="search(searchHost.facebook, searchtext.content, 1)">Facebook</div>
+                    <div id="all" class="col-sm-3 col-md-3 col-lg-1 col-lg-offset-3 class" ng-if="searchHost.show" ng-click="search(searchHost.all, searchtext.content, 1)">All</div>
+                    <div id="news" class="col-sm-3 col-md-3 col-lg-1 class" ng-if="searchHost.show" ng-click="search(searchHost.news, searchtext.content, 1)">Ettoday</div>
+                    <div id="facebook"class="col-sm-3 col-md-3 col-lg-1 class" ng-if="searchHost.show" ng-click="search(searchHost.facebook, searchtext.content, 1)">Facebook</div>
                 </div>
                 <div class="row" style="margin-top:8px;">
                     <div class="col-sm-6 col-md-4 col-lg-2 col-lg-offset-2"><em>{{ searchResult.resultTotal }}</em></div>
@@ -66,13 +66,17 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-10 col-md-8 col-lg-6 col-lg-offset-3">
+                    <div class="col-sm-12 col-md-8 col-lg-8 col-lg-offset-2">
                         <div class="row">
-                            <div class="col-sm-2 col-md-1 col-lg-1" ng-if="searchPages[0].display">page</div>
-                            <div class="col-sm-1 col-md-1 col-lg-1 page" 
-                                ng-click="search(page.url, searchtext.content, page.num)"  ng-if="page.display" 
-                                ng-repeat="page in searchPages">
-                                {{ page.num }}
+                            <div class="col-sm-12 col-md-12 col-lg-10" >
+                                <div class="row pageborder" ng-if="searchPages[0].display">
+                                    <span class="col-lg-1 page">&lt;</span>
+                                    <span class="col-lg-1 page"ng-click="search(page.url, searchtext.content, page.num)"  ng-if="page.display" 
+                                    ng-repeat="page in searchPages">
+                                    {{ page.num }}</span>
+                                    <span class="col-lg-1 page">&gt;</span>
+                                </div>
+                            </span>
                             </div>
                             
                         </div>
@@ -80,7 +84,7 @@
                 </div>
             </div>
         </main>
-        <footer >
+        <footer  >
             <p>&copy; 2018 Ian Tsai | <a href="#">About</a> | <a href="#">Terms of use</a></p>
         </footer>
     </body>
