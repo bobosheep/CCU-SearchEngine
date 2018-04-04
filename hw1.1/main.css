@@ -145,18 +145,18 @@ footer p {
 
 @-webkit-keyframes mymove1{
     from{opacity: 0;padding-left: 0px;}
-    to{opacity: 0.8;padding-left: 21px;}
+    to{opacity: 1;padding-left: 21px;}
 }
 @keyframes mymove1{
     from{opacity: 0;padding-left: 0px;}
-    to{opacity: 0.8;padding-left: 21px;}
+    to{opacity: 1;padding-left: 21px;}
 }
 
 @-webkit-keyframes mymove2{
-    from{opacity: 0;padding-left: 21px;}
-    to{opacity: 0.8;padding-left: 0px;}
+    from{opacity: 0;padding-left: 150px;}
+    to{opacity: 1;padding-left: 0px;}
 }
 @keyframes mymove2{
-    from{opacity: 0;padding-left: 21px;}
-    to{opacity: 0.8;padding-left: 0px;}
+    from{opacity: 0;padding-left: 150px;}
+    to{opacity: 1;padding-left: 0px;}
 }
