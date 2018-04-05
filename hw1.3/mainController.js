@@ -46,7 +46,8 @@ app.controller('mainController', ['$scope','$http', '$sce', function($scope, $ht
           "content" : {}
       }
     },
-    "from": 1
+    "from": 1,
+    "size": 10
   }
 
   $scope.searchPages = [{
@@ -106,7 +107,7 @@ app.controller('mainController', ['$scope','$http', '$sce', function($scope, $ht
       return;
     }
     
-    url = $scope.searchKernel.selected.url + url;
+    postUrl = $scope.searchKernel.selected.url + url;
     
     $scope.body.query.match.content = val;
 
@@ -123,11 +124,13 @@ app.controller('mainController', ['$scope','$http', '$sce', function($scope, $ht
     
 
     //post request
-    $scope.response = $http.post(url, $scope.body,{
+    $scope.response = $http.post(postUrl, $scope.body,{
         headers: {
           'Access-Control-Allow-Origin':'*'
         },  
       }).then(function(response){
+        
+        console.log(response);
         ///get response
         $scope.response = response.data;
         ///total result

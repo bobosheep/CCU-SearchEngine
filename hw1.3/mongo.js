@@ -14,16 +14,16 @@ let fb = Mongojs(fbURL, fbcollections);
 let news = Mongojs(newsURL, newscollections);
 
 /* Create Server with port 3300 */
-server = Http.createServer(function onRequest(request, response) {
+server = Http.createServer(function (request, response) {
     router( request, response, function( error ) {
         if ( !error ) {
-            response.writeHead( 404 );
+            response.writeHead( 200 );
         } else {
             // Handle errors
             console.log( error.message, error.stack );
             response.writeHead( 400 );
         }
-        response.end( '\n' );
+        response.end( '123' );
     });
     /*
        let urlParts = Url.parse(request.url);
@@ -73,8 +73,46 @@ router.post('/_search', searchAll);
 
 /* Search in news collection */
 function searchNews( request, response){
-    let query = request.body;
-    //console.log(request);
+    let queryString = request.body.query.match.content;
+    console.log(request.body);
+    news.ettoday.find({$text:{$search: queryString}}, {score:{$meta:"textScore"}}).sort( { score: { $meta: "textScore" } } ).toArray(function(err, result){
+        if (err) {
+            console.log('Error');
+            
+        }
+        //console.log(result);
+        let pfrom = request.body.from;
+        let end = pfrom + request.body.size; 
+        //console.log(pfrom, end);
+        let responseData = {
+            hits: {
+                hits: []
+            }
+        };
+        for(let i = 0 ; i < (result.length == null ? 0 : result.length); i++){
+            result[i] = {
+                "_id": result[i]._id,
+                "_collection": "ettoday",
+                "_score": result[i].score,
+                "_source":{
+                    "content" : result[i].content,
+                    "created_time" : result[i].create_time,
+                    "id" : result[i].id,
+                    "title" : result[i].title,
+                    "url" : result[i].url
+                },
+                "highlight":{
+                    "content":[result[i].content.split("，")]
+                }
+            }
+        }
+        //console.log(result);
+        responseData.hits.totals = result.length;
+        responseData.hits.hits = result.slice(pfrom, end);
+        response.writeHead(200, {'Content-Type': 'application/json'});
+        responseData = JSON.stringify(responseData);
+        response.end(responseData);
+    });
     console.log('news');
 }
 router.post('/news/_search', searchNews);
@@ -82,17 +120,44 @@ router.post('/news/_search', searchNews);
 /* Search in facebook collection */
 function searchFacebook( request, response){
     let queryString = request.body.query.match.content;
-    let responseData = {};
+    
     console.log(request.body);
-    console.log('fb');
+    //console.log('fb');
     fb.haterccu.find({$text:{$search: queryString}}, {score:{$meta:"textScore"}}).sort( { score: { $meta: "textScore" } } ).toArray(function(err, result){
         if (err) console.log('Error');
-        console.log(result);
-        console.log(result.length);
-        responseData.hit = result;
+        //console.log(result);
+        let pfrom = request.body.from;
+        let end = pfrom + request.body.size; 
+        //console.log(pfrom, end);
+        let responseData = {
+            hits: {
+                hits: []
+            }
+        };
+        for(let i = 0 ; i < result.length ; i++){
+            result[i] = {
+                "_id": result[i]._id,
+                "_collection": "haterccu",
+                "_score": result[i].score,
+                "_source":{
+                    "content" : result[i].content,
+                    "created_time" : result[i].create_time,
+                    "id" : result[i].id,
+                    "title" : result[i].title,
+                    "url" : result[i].url
+                },
+                "highlight":{
+                    "content":[result[i].content]
+                }
+            }
+        }
+        //console.log(result);
+        responseData.hits.totals = result.length;
+        responseData.hits.hits = result.slice(pfrom, end);
+        response.writeHead(200, {'Content-Type': 'application/json'});
+        responseData = JSON.stringify(responseData);
+        response.end(responseData);
     });
-    esponse.writeHead(200, {'Content-Type': 'application/json'});
-    response.json(responseData);
-    response.end();
+    
 }
 router.post('/facebook/_search', searchFacebook);
