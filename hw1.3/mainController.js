@@ -8,12 +8,29 @@ app.controller('mainController', ['$scope','$http', '$sce', function($scope, $ht
   $scope.searchtext = {
     "content":""
   }
+  //search kernel
+  $scope.searchKernel = {
+    "options":[{
+      "name":"ElasticSearch",
+      "url":"http://localhost:9200"
+    },{
+      "name":"MongoDB",
+      "url":"http://localhost:3300"
+    },{
+      "name":"Solr"
+    }],
+    "selected":{
+      "name":"ElasticSearch",
+      "url":"http://localhost:9200"
+    }
+  }
+
   //request url
   $scope.searchHost = {
     "show" : false,
-    "all" :'http://localhost:9200/_search',
-    "news" : 'http://localhost:9200/news/_search',
-    "facebook" :'http://localhost:9200/facebook/_search'
+    "all" :'/_search',
+    "news" : '/news/_search',
+    "facebook" :'/facebook/_search'
   }
   //query body
   $scope.body = {
@@ -88,7 +105,11 @@ app.controller('mainController', ['$scope','$http', '$sce', function($scope, $ht
       console.log('Empty');
       return;
     }
+    
+    url = $scope.searchKernel.selected.url + url;
+    
     $scope.body.query.match.content = val;
+
 
     if((page - 1) * 10 > $scope.total){
       page = page - 1;
@@ -110,7 +131,7 @@ app.controller('mainController', ['$scope','$http', '$sce', function($scope, $ht
         ///get response
         $scope.response = response.data;
         ///total result
-       $scope.total = $scope.response.hits.total;
+        $scope.total = $scope.response.hits.total;
         $scope.searchResult.resultTotal = 'Total ' + $scope.total  + ' results' 
         ///pages show control
         $scope.searchPages.forEach(function(p, i){
@@ -127,15 +148,15 @@ app.controller('mainController', ['$scope','$http', '$sce', function($scope, $ht
         
         console.log(url);
         console.log($scope.searchHost);
-        if(url == $scope.searchHost.all){
+        if(url == $scope.searchKernel.selected.url + $scope.searchHost.all){
           $('#all').addClass("is-active");
           $('#news').removeClass("is-active");
           $('#facebook').removeClass("is-active");
-        } else if(url == $scope.searchHost.news){
+        } else if(url == $scope.searchKernel.selected.url + $scope.searchHost.news){
           $('#all').removeClass("is-active");
           $('#news').addClass("is-active");
           $('#facebook').removeClass("is-active");
-        } else if(url == $scope.searchHost.facebook){
+        } else if(url == $scope.searchKernel.selected.url + $scope.searchHost.facebook){
           $('#all').removeClass("is-active");
           $('#news').removeClass("is-active");
           $('#facebook').addClass("is-active");
