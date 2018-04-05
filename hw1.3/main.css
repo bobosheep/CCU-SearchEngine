@@ -54,16 +54,18 @@ a:visited{
     color: rgb(255, 13, 13);
 }
 body{
+    
+    font-family: 'Comfortaa', cursive;
+    /*font-family: 'Mina', sans-serif;
+    font-family: 'Poiret One', cursive;
+    font-family: 'Gaegu', cursive;*/
     background-image: url('./img/bg2.jpg');
     background-size: cover;
     background-attachment: fixed;
 }
-input:hover{
+.button:hover{
     transition: .3s;
     box-shadow: rgba(0, 0, 51, 0.651);
-}
-.primary:hover{
-    background-color: rgba(8, 8, 226, 0.685);
 }
 .pageborder{
     border-style: solid;
@@ -124,7 +126,7 @@ footer p {
 }
 
 .chunbo-name{
-    font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Righteous', cursive;
     font-size: 60;
     
     color: midnightblue ;  
