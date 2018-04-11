@@ -16,8 +16,6 @@ app.controller('mainController', ['$scope','$http', '$sce', function($scope, $ht
     },{
       "name":"MongoDB",
       "url":"http://localhost:3300"
-    },{
-      "name":"Solr"
     }],
     "selected":{
       "name":"ElasticSearch",
@@ -151,15 +149,15 @@ app.controller('mainController', ['$scope','$http', '$sce', function($scope, $ht
         
         console.log(url);
         console.log($scope.searchHost);
-        if(url == $scope.searchKernel.selected.url + $scope.searchHost.all){
+        if(url == $scope.searchHost.all){
           $('#all').addClass("is-active");
           $('#news').removeClass("is-active");
           $('#facebook').removeClass("is-active");
-        } else if(url == $scope.searchKernel.selected.url + $scope.searchHost.news){
+        } else if(url ==$scope.searchHost.news){
           $('#all').removeClass("is-active");
           $('#news').addClass("is-active");
           $('#facebook').removeClass("is-active");
-        } else if(url == $scope.searchKernel.selected.url + $scope.searchHost.facebook){
+        } else if(url == $scope.searchHost.facebook){
           $('#all').removeClass("is-active");
           $('#news').removeClass("is-active");
           $('#facebook').addClass("is-active");

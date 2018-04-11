@@ -47,7 +47,7 @@ a:visited{
 .resultInfo:hover{
     transition: .3s;
     box-shadow: rgba(0, 0, 51, 0.651);
-    background-color: rgba(99, 105, 192, 0.308);
+    background-color: rgba(80, 80, 80, 0.363)
 }
 
 .highlight{
