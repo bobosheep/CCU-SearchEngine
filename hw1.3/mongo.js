@@ -44,9 +44,9 @@ function searchAll( request, response){
     let res1 = [];
     let res2 = [];
     let result = [];
-    res1 = all.news.find({$text:{$search: queryString}}, {score:{$meta:"textScore"}}).sort( { score: { $meta: "textScore" } } ).toArray(function(err, fresult){
+    res1 = all.news.find({$text:{$search: queryString}}, {score:{$meta:"textScore"}}).toArray(function(err, fresult){
         res1 = fresult == null ? [] : fresult; 
-        all.facebook.find({$text:{$search: queryString}}, {score:{$meta:"textScore"}}).sort( { score: { $meta: "textScore" } } ).toArray(function(err, ffresult){
+        all.facebook.find({$text:{$search: queryString}}, {score:{$meta:"textScore"}}).toArray(function(err, ffresult){
             res2 = ffresult == null ? [] : ffresult;
            // console.log(res1[0]);
             //console.log(res2[0]);
@@ -69,6 +69,9 @@ function searchAll( request, response){
                 }
             };
             for(let i = 0 ; i < (result == null ? 0 : result.length); i++){
+                if (i === 0 || i === result.length - 1) {
+                    console.log(result[i].score);
+                }
                 result[i] = {
                     "_id": result[i]._id,
                     "_collection": "ettoday",
@@ -105,7 +108,7 @@ function searchNews( request, response){
     let queryString = request.body.query.match.content;
     console.log(request.body);
     let startTime = new Date().getTime();
-    all.news.find({$text:{$search: queryString}}, {score:{$meta:"textScore"}}).sort( { score: { $meta: "textScore" } } ).toArray(function(err, result){
+    all.news.find({$text:{$search: queryString}}, {score:{$meta:"textScore"}}).toArray(function(err, result){
         if (err) {
             console.log('Error');
             
@@ -113,6 +116,12 @@ function searchNews( request, response){
         let endTime = new Date().getTime();
         let costTime = endTime - startTime;
         console.log(costTime + "ms" );
+
+        result = result.sort(function(a, b){
+            if(a.score > b.score)   return -1;
+            else if (a.score < b.score) return 1;
+            else return 0;
+        });
         //console.log(result);
         let pfrom = request.body.from;
         let end = pfrom + request.body.size; 
@@ -156,7 +165,7 @@ function searchFacebook( request, response){
     let queryString = request.body.query.match.content;
     let searchTime;
     //console.log(request.body);
-    fb.haterccu.find({$text:{$search: queryString}}, {score:{$meta:"textScore"}}).sort( { score: { $meta: "textScore" } } ).explain("executionStats", function(err, result){
+    fb.haterccu.find({$text:{$search: queryString}}, {score:{$meta:"textScore"}}).explain("executionStats", function(err, result){
         
         console.log(result);
         searchTime = result.executionStats.executionTimeMillis;
@@ -164,13 +173,19 @@ function searchFacebook( request, response){
     });
     console.log('fb');
     let startTime = new Date().getTime();
-    all.facebook.find({$text:{$search: queryString}}, {score:{$meta:"textScore"}}).sort( { score: { $meta: "textScore" } } ).toArray(function(err, result){
+    all.facebook.find({$text:{$search: queryString}}, {score:{$meta:"textScore"}}).toArray(function(err, result){
         if (err) console.log('Error');
         //console.log(result);
         
         let endTime = new Date().getTime();
         let costTime = endTime - startTime;
         console.log(costTime + "ms" );
+
+        result = result.sort(function(a, b){
+            if(a.score > b.score)   return -1;
+            else if (a.score < b.score) return 1;
+            else return 0;
+        });
         //console.log(result);
         let pfrom = request.body.from;
         let end = pfrom + request.body.size; 
