@@ -44,7 +44,7 @@ function searchAll( request, response){
     let res1 = [];
     let res2 = [];
     let result = [];
-    res1 = all.news.find({$text:{$search: queryString}}, {score:{$meta:"textScore"}}).toArray(function(err, fresult){
+    all.news.find({$text:{$search: queryString}}, {score:{$meta:"textScore"}}).toArray(function(err, fresult){
         res1 = fresult == null ? [] : fresult; 
         all.facebook.find({$text:{$search: queryString}}, {score:{$meta:"textScore"}}).toArray(function(err, ffresult){
             res2 = ffresult == null ? [] : ffresult;
@@ -165,12 +165,6 @@ function searchFacebook( request, response){
     let queryString = request.body.query.match.content;
     let searchTime;
     //console.log(request.body);
-    fb.haterccu.find({$text:{$search: queryString}}, {score:{$meta:"textScore"}}).explain("executionStats", function(err, result){
-        
-        console.log(result);
-        searchTime = result.executionStats.executionTimeMillis;
-        console.log('321');
-    });
     console.log('fb');
     let startTime = new Date().getTime();
     all.facebook.find({$text:{$search: queryString}}, {score:{$meta:"textScore"}}).toArray(function(err, result){
