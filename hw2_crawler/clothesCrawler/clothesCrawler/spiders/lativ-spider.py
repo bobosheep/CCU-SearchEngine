@@ -24,21 +24,21 @@ class LativSpider(scrapy.Spider):
             nameSplit = name.split('-')
             item['name'] = nameSplit[0]
             item['gender'] = nameSplit[1]
-            if nameSplit[0].find('T恤') or nameSplit[0].find('衫') or nameSplit[0].find('衣') \
-                or nameSplit[0].find('背心') or nameSplit[0].find('洋裝'):
+            if nameSplit[0].find('T恤') >= 0 or nameSplit[0].find('衫') >= 0 or nameSplit[0].find('衣') >= 0 \
+                or nameSplit[0].find('背心') >= 0 or nameSplit[0].find('洋裝') >= 0:
                 item['category'] = '衣服'
-            elif nameSplit[0].find('外套') or nameSplit[0].find('羽絨') or nameSplit[0].find('夾克'):
+            elif nameSplit[0].find('外套') >= 0 or nameSplit[0].find('羽絨') >= 0 or nameSplit[0].find('夾克') >= 0:
                 item['category'] = '外套'
-            elif nameSplit[0].find('內衣') or nameSplit[0].find('bra') or nameSplit[0].find('細肩帶'):
+            elif nameSplit[0].find('內衣') >= 0 or nameSplit[0].find('bra') >= 0 or nameSplit[0].find('細肩帶') >= 0:
                 item['category'] = '內衣'
-            elif nameSplit[0].find('三角褲') or nameSplit[0].find('平口褲') or nameSplit[0].find('安全褲') \
-                 or nameSplit[0].find('生理褲') or nameSplit[0].find('四角褲'):
+            elif nameSplit[0].find('三角褲') >= 0 or nameSplit[0].find('平口褲') >= 0 or nameSplit[0].find('安全褲') >= 0 \
+                 or nameSplit[0].find('生理褲') >= 0 or nameSplit[0].find('四角褲') >= 0:
                 item['category'] = '內褲'
-            elif nameSplit[0].find('褲') or nameSplit[0].find('裙'):
+            elif nameSplit[0].find('褲') >= 0 or nameSplit[0].find('裙') >= 0:
                 item['category'] = '褲裙'
-            elif nameSplit[0].find('鞋') :
+            elif nameSplit[0].find('鞋') >= 0 :
                 item['category'] = '鞋'
-            else 
+            else :
                 item['category'] = '配件'
             
             item['url'] = response.url

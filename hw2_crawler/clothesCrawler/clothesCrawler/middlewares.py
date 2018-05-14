@@ -84,8 +84,8 @@ class ClothescrawlerDownloaderMiddleware(object):
             #     executable_path='F:/PythonProjects/Scrapy_Job/JobSpider/tools/MicrosoftWebDriver.exe')
             spider.browser.get(request.url)
             import time
-            time.sleep(3)
-            print ("访问:{0}".format(request.url))
+            time.sleep(1)
+            print ("visit:{0}".format(request.url))
 
             #直接返回给spider，而非再传给downloader
             return HtmlResponse(url=spider.browser.current_url, body=spider.browser.page_source, encoding="utf-8",

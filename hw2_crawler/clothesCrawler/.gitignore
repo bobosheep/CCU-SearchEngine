@@ -1,4 +1,4 @@
 chromedriver.exe
-./data
-./crawls
+data
+crawls
 debug.log
