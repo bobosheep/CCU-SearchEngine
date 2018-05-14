@@ -18,12 +18,21 @@ class LativSpider(scrapy.Spider):
 
     def parse(self, response):
         self.logger.info('Parse function called on %s', response.url)
+        print('Now parse on {0}'.format(response.url))
         for obj in response.xpath('//*[@id="exhibit"]/div[2]'):
             item = ClothescrawlerItem()
             name = response.xpath('//*[@id="productImg"]/@title').extract_first()
             nameSplit = name.split('-')
             item['name'] = nameSplit[0]
-            item['gender'] = nameSplit[1]
+
+            if name.find('女') > 0:
+                item['gender'] = '女'
+            elif name.find('男') > 0:
+                item['gender'] = '男'
+            else :
+                item['gender'] = '童'
+
+
             if nameSplit[0].find('T恤') >= 0 or nameSplit[0].find('衫') >= 0 or nameSplit[0].find('衣') >= 0 \
                 or nameSplit[0].find('背心') >= 0 or nameSplit[0].find('洋裝') >= 0:
                 item['category'] = '衣服'

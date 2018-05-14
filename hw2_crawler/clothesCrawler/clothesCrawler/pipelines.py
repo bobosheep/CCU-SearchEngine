@@ -9,13 +9,16 @@ import json
 
 class JsonPipeline(object):
     def __init__(self):
-        self.Lativ = open('data/LativItems.txt', 'w', encoding='utf8')
+        self.Lativ = open('data/LativItems.txt', 'a+', encoding='utf8')
         self.Uniqlo = open('data/UniqloItems.json', 'w', encoding='utf8')
         self.OBdesign = open('data/OBdesignItems.json', 'w', encoding='utf8')
     def process_item(self, item, spider):
         if spider.name == 'lativ':
-            line = json.dumps(dict(item),ensure_ascii=False) + "\n"
-            self.Lativ.write(line)
+            for key in item :
+                line = '@' + key + ':' + str(item[key]) + '\n'
+                #line = json.dumps(dict(item),ensure_ascii=False) + "\n"
+                self.Lativ.write(line)
+            self.Lativ.write('\n')
         elif spider.name == 'uniqlo':
             line = json.dumps(dict(item),ensure_ascii=False) + "\n"
             self.Uniqlo.write(line)
