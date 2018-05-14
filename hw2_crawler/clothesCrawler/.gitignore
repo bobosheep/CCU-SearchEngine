@@ -1,0 +1,4 @@
+chromedriver.exe
+./data/
+./crawls/
+debug.log
