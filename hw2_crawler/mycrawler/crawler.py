@@ -1,11 +1,9 @@
-import certifi
 import time
 import lxml
-import urllib3
-import requests
 import queue
 import datetime
-from urllib.parse import urlencode
+import pickle
+
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from scrapy.selector import Selector
@@ -20,12 +18,13 @@ allow_domain = dict({'lativ.com.tw':'lativ.com.tw'})
 url_pool = dict()
 urls = queue.Queue()
 
-config = dict({
+crawl_config = dict({
     "delay_time" : 0.2,
-    "outputData_dir" : "./outputdata/",
-    "output_file" : "text.txt",
-    "seenUrl_file" : "seenUrl.txt", 
-
+    "output_dir" : "./outputdata/",
+    "output_file" : "Record.txt",
+    "seenUrl_file" : "seenUrl",
+    "bulk_size" : 10,
+    "fetch_limit" : 10
 })
 for url in start_url:
     urls.put(url)
@@ -47,7 +46,7 @@ while not urls.empty():
     print("Chrome get url time : {0}".format(stop - start))
 
     start = timeit.default_timer()
-    time.sleep(config['delay_time'])
+    time.sleep(crawl_config['delay_time'])
     stop = timeit.default_timer()
 
     print("sleep time : {0}".format(stop - start))
@@ -92,7 +91,14 @@ while not urls.empty():
             continue
         nameSplit = name.split('-')
         item['name'] = nameSplit[0]
-        item['gender'] = nameSplit[1]
+        if name.find('女') > 0:
+            item['gender'] = '女'
+        elif name.find('男') > 0:
+            item['gender'] = '男'
+        else :
+            item['gender'] = '童'
+
+
         if nameSplit[0].find('T恤') >= 0 or nameSplit[0].find('衫') >= 0 or nameSplit[0].find('衣') >= 0 \
             or nameSplit[0].find('背心') >= 0 or nameSplit[0].find('洋裝') >= 0:
             item['category'] = '衣服'
@@ -124,7 +130,13 @@ while not urls.empty():
         if item['name'] == [] or item['name'] is None:
             continue
         
-        print(item)
+        #print(item)
+        with open(crawl_config['output_dir'] + crawl_config['output_file'], "a+", encoding='utf8') as fopen:
+            for key in item :
+                line = '@' + key + ':' + str(item[key]) + '\n'
+                #line = json.dumps(dict(item),ensure_ascii=False) + "\n"
+                fopen.write(line)
+            fopen.write('\n')
 
 
     # find links
