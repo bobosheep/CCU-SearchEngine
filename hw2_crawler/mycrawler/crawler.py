@@ -18,6 +18,8 @@ allow_domain = dict({'lativ.com.tw':'lativ.com.tw'})
 url_pool = dict()
 urls = queue.Queue()
 
+fetch_cnt = 0
+
 crawl_config = dict({
     "delay_time" : 0.2,
     "output_dir" : "./outputdata/",
@@ -36,33 +38,33 @@ for url in start_url:
 chrome = webdriver.Chrome(executable_path='./chromedriver.exe')
 
 #fetcher
-while not urls.empty():
+while not urls.empty() and fetch_cnt < crawl_config['fetch_limit']:
     cur_url = urls.get()
     print(cur_url)
     start = timeit.default_timer()
     chrome.get(cur_url)
-    stop = timeit.default_timer()
+    #stop = timeit.default_timer()
 
-    print("Chrome get url time : {0}".format(stop - start))
+    #print("Chrome get url time : {0}".format(stop - start))
 
-    start = timeit.default_timer()
+    #start = timeit.default_timer()
     time.sleep(crawl_config['delay_time'])
-    stop = timeit.default_timer()
+    #stop = timeit.default_timer()
 
-    print("sleep time : {0}".format(stop - start))
+    #print("sleep time : {0}".format(stop - start))
     pageSource = chrome.page_source
     #print(pageSource)
-    start = timeit.default_timer()
+    #start = timeit.default_timer()
     soup = BeautifulSoup(pageSource, 'html.parser')
-    stop = timeit.default_timer()
+    #stop = timeit.default_timer()
 
-    print("beautifulSoup parse time : {0}".format(stop - start))
+    #print("beautifulSoup parse time : {0}".format(stop - start))
     
-    start = timeit.default_timer()
+    #start = timeit.default_timer()
     response = Selector(text=pageSource)
-    stop = timeit.default_timer()
+    #stop = timeit.default_timer()
 
-    print("Seletor parse time : {0}".format(stop - start))
+    #print("Seletor parse time : {0}".format(stop - start))
     # extract what i want
 
     #parser = etree.HTMLParser()
@@ -140,13 +142,13 @@ while not urls.empty():
 
 
     # find links
-    start = timeit.default_timer()
+    #start = timeit.default_timer()
     find_links = soup.find_all('a')
-    stop = timeit.default_timer()
+    #stop = timeit.default_timer()
 
-    print("Find all <a> parse time : {0}".format(stop - start))
+    #print("Find all <a> parse time : {0}".format(stop - start))
 
-    start = timeit.default_timer()
+    #start = timeit.default_timer()
     for link in find_links:
         link = link.get('href')
         #print(link)
@@ -179,7 +181,7 @@ while not urls.empty():
     
     stop = timeit.default_timer()
 
-    print("check url time : {0}".format(stop - start))
+    print("Fetch time : {0}\n".format(stop - start))
 
 
 
