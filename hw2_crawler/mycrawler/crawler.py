@@ -21,6 +21,7 @@ def Parser(cur_url, pageSource, crawl_config):
     soup = BeautifulSoup(pageSource, 'html.parser')
     response = Selector(text=pageSource)
     item = dict({
+                "site":"",
                 "name":"",
                 "gender":"",
                 "category":"",
@@ -29,6 +30,7 @@ def Parser(cur_url, pageSource, crawl_config):
                 "img_url":"",
                 "price":"",
                 "store_price":"",
+                "color":"",
                 "colors":"",
                 "sizes":"",
                 "last_updated":""
@@ -38,17 +40,19 @@ def Parser(cur_url, pageSource, crawl_config):
         for obj in response.xpath('//*[@id="exhibit"]/div[2]'):
             
             name = response.xpath('//*[@id="productImg"]/@title').extract_first()
-            print(name)
+            color = response.xpath('//span[@id="icolor"]/text()').extract_first()
             if name == [] or name is None:
                 continue
 
             nameSplit = name.split('-')
             item['name'] = nameSplit[0]
-             
+            item['site'] = 'lativ'
             
             if item['name'] == [] or item['name'] is None:
                 continue
-            
+            item['color'] = color
+            print(item['name'])
+            print(item['color']) 
             item['url'] = cur_url
             item['obj_id'] = response.xpath('//*[@id="isn"]/text()').extract_first()
             item['img_url'] = response.xpath('//*[@id="productImg"]/@src').extract_first() 
@@ -132,9 +136,8 @@ def UrlPooling(find_links, url_pool, seen_url, crawl_config):
             if not pushInPool : 
                 continue
         else :
-            #相對連結
-            page = link.split('/')
-            if len(page) >= 2 and page[0] == 'Product' :
+            #相對連結\
+            if link.find('Product') > 0 :
                 #lativ.com.tw/Poduct下的資料目前不需要
                 continue
             link = crawl_config['start_url'][0] + link
@@ -175,8 +178,10 @@ def crawler(crawl_config):
     fetch_cnt = 0
     while not url_pool.empty() and fetch_cnt < crawl_config['fetch_limit']:
         #fetcher
+        now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        print(now)
         cur_url = url_pool.get()
-        print(cur_url)
+        print('[{0}] {1}'.format(fetch_cnt + 1, cur_url))
         
         start = timeit.default_timer()
         
@@ -210,17 +215,27 @@ def crawler(crawl_config):
         for key in seen_url:
             line = key + '\n'
             fp.write(line)
+        fp.write('\n')
+        line = 'Total Fetch URL' + fetch_cnt + '\n'
+
+    crawl_end = timeit.default_timer()
+    total_time = crawl_end - crawl_start
+    print('Total time : {0}'.format(total_time))
+    print('Average of one url time: {0}'.format(total_time / fetch_cnt))
+
         
 
 if __name__ == "__main__":
     
+    crawl_start = timeit.default_timer()
+
     crawl_config = {
-        "delay_time" : 0.2,
+        "delay_time" : 0.5,
         "threads" : 5,
         "output_dir" : "./outputdata/",
         "output_file" : "Record1.txt",
         "seenUrl_file" : "seenUrl",
-        "fetch_limit" : 10000,
+        "fetch_limit" : 40000,
         "start_url":['https://www.lativ.com.tw'],
         "allow_domain": {'lativ.com.tw':'lativ.com.tw'}
     }
@@ -229,3 +244,4 @@ if __name__ == "__main__":
 
     crawler(crawl_config)
 
+   
