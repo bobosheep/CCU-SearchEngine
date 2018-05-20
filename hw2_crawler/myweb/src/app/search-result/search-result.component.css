@@ -1,0 +1,8 @@
+.w-fix{
+    width: 50%;
+    margin-left: 25%;
+}
+article:hover{
+    transition: .3s;
+    transform: scale(1.02);
+}
