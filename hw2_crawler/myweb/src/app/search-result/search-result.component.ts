@@ -1,6 +1,7 @@
 import { Component, OnInit, Query } from '@angular/core';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
+import { fromEvent } from 'rxjs/observable/fromEvent';
 
 import { SearchQuery , QueryBody} from '../query';
 import { ClothesData } from '../clothes';
@@ -10,6 +11,7 @@ import { ClothesData } from '../clothes';
   templateUrl: './search-result.component.html',
   styleUrls: ['./search-result.component.css']
 })
+
 
 export class SearchResultComponent implements OnInit {
   httpOptions = {
@@ -28,8 +30,13 @@ export class SearchResultComponent implements OnInit {
         name : this.query
       }
     },
-    from : 1,
+    from : 0,
     size : 10
+  }
+
+  result: any = {
+    took_time : 0,
+    hits_total : 0
   }
 
   clothes : any[] ;
@@ -37,15 +44,35 @@ export class SearchResultComponent implements OnInit {
 
   constructor(private http:HttpClient) { }
 
-  getSearch(){
+  clc = fromEvent(window, 'scroll')
+  .subscribe(e => {
+    let d = document.documentElement;
+    if (window.scrollY + d.clientHeight == d.scrollHeight){
+      console.log('bottom~');
+    }
+  });
+  launchModal = (id:string)=>{
+    //console.log(id);
+    let ele = document.getElementById(id);
+    ele.classList.add("is-active");
+  }
+
+  closeModal = (id:string)=>{
+    let ele = document.getElementById(id);
+    ele.classList.remove("is-active");
+  }
+
+  getSearch = () => {
     if(this.query.length > 0){
       console.log(this.query);
       this.queryBody.query.match.name = this.query;
       this.http.post(`http://localhost:9200/clothes/_search`, this.queryBody, this.httpOptions)
       .subscribe(
-        (data:any) => {
-          console.log(data);
-          this.response = data.hits.hits;
+        (datas:any) => {
+          console.log(datas);
+          this.response = datas.hits.hits;
+          this.result.took_time = datas.took;
+          this.result.hits_total = datas.hits.total;
           this.clothes = [];
           console.log(this.response);
           if(this.response.length > 0){
@@ -78,5 +105,6 @@ export class SearchResultComponent implements OnInit {
 
   ngOnInit() {
   }
+
 
 }
