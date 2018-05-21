@@ -31,7 +31,7 @@ export class SearchResultComponent implements OnInit {
       }
     },
     from : 0,
-    size : 10
+    size : 20
   }
 
   result: any = {

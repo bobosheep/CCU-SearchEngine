@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { SearchQuery } from './query' ;
+import { SearchQuery , QueryBody} from './query' ;
 
 @Component({
   selector: 'app-root',
@@ -9,5 +9,5 @@ import { SearchQuery } from './query' ;
 })
 export class AppComponent {
   title = 'app';
-  
+
 }
