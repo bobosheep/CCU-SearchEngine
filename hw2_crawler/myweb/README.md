@@ -1,4 +1,6 @@
-# Myweb
+# G-YOC
+
+A website for searching clothing datas of lativ.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.3.
 
