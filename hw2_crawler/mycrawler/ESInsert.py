@@ -12,8 +12,7 @@ import time
 
 # In[2]:
 es = Elasticsearch()
-
-lativ_DOC = '../../Data/clothes/'
+lativ_DOC = 'outputdata/'
 BATCH_SIZE = 4000
 
 
@@ -68,12 +67,12 @@ def getInfo(data):
 
 cnt = 0
 
-lativ_record = ['lativ_Record1.txt']
+lativ_record = ['lativ_Record-finish3.txt']
 
 bulk_config = {
     "rec" : lativ_record,
     "doc" : lativ_DOC,
-    "index" : 'Clothes',    
+    "index" : 'clothes',    
 }
 
 batchTime = []

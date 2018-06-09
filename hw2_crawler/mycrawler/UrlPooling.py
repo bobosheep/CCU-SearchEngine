@@ -9,7 +9,8 @@ from selenium import webdriver
 from scrapy.selector import Selector
 
 
-def UrlPooling(find_links, url_pool, seen_url, crawl_config):
+def UrlPooling(cur_url, find_links, url_pool, seen_url, crawl_config):
+    now_domain = cur_url.split('/')[2]
     for link in find_links:
         link = link.get('href')
         #print(link)
@@ -23,7 +24,9 @@ def UrlPooling(find_links, url_pool, seen_url, crawl_config):
             pushInPool = False
 
             for key in crawl_config['allow_domain']:
-                if domain.find(key) > 0:
+                if domain.find(key) >= 0:
+                    if key is 'www.net-fashion.net' and linksplit[3] is 'cart':
+                        break
                     pushInPool = True
                     break
 
@@ -31,10 +34,10 @@ def UrlPooling(find_links, url_pool, seen_url, crawl_config):
                 continue
         else :
             #相對連結\
-            if link.find('Product') > 0 :
+            if link.find('Product') >= 0 and now_domain is 'lativ.com.tw':
                 #lativ.com.tw/Poduct下的資料目前不需要
                 continue
-            link = crawl_config['start_url'][0] + link
+            link = now_domain + link
 
 
         if link in seen_url:

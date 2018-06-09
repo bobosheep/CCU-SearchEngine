@@ -1,19 +1,16 @@
-
-# coding: utf-8
-
-# In[1]:
-
-
-from elasticsearch import Elasticsearch
-from elasticsearch import helpers
-import elasticsearch
+import pymongo
 import time
+import jieba
+
+from pymongo.errors import BulkWriteError
+from pymongo import MongoClient
 
 
-# In[2]:
-es = Elasticsearch()
+client = MongoClient('localhost', 27017)
+db = client.Clothes
 
-lativ_DOC = '../../Data/clothes/'
+
+lativ_DOC = 'outputdata/'
 BATCH_SIZE = 4000
 
 
@@ -27,7 +24,9 @@ def getInfo(data):
             record = dict()
             record['site'] = line[6:]
         elif line.startswith('@name:'):
-            record['name'] = line[6:]
+            line = jieba.cut(line[6:])
+            line = " ".join(line)
+            record['name'] = line
         elif line.startswith('@gender:'):
             record['gender'] = line[8:]
         elif line.startswith('@category:'):
@@ -43,7 +42,9 @@ def getInfo(data):
         elif line.startswith('@store_price:'):
             record['store_price'] = line[13:]
         elif line.startswith('@color:'):
-            record['color'] = line[7:]
+            line = jieba.cut(line[7:])
+            line = " ".join(line)
+            record['color'] = line
         elif line.startswith('@colors:'):
             record['colors'] = list()
             arr = line[8:].replace('\'', ',').replace('[', ',').replace(']', ',').split(',')
@@ -68,12 +69,12 @@ def getInfo(data):
 
 cnt = 0
 
-lativ_record = ['lativ_Record1.txt']
+lativ_record = ['lativ_Record-finish3.txt']
 
 bulk_config = {
     "rec" : lativ_record,
     "doc" : lativ_DOC,
-    "index" : 'Clothes',    
+    "index" : 'clothes',    
 }
 
 batchTime = []
@@ -87,17 +88,13 @@ for d in bulk_config['rec']:
     for rec in getInfo(data):
         #print(rec['colors'])
         #print(rec['sizes'])
-        acts.append({
-            '_index': bulk_config['index'],
-            '_type': rec['site'],
-            '_id': rec['obj_id'],
-            '_source': rec,
-        })
+        rec['_id'] = rec['obj_id']
+        acts.append(rec.copy())
         cnt += 1
         if len(acts) == BATCH_SIZE:
             batch_start = time.time()
             print('finish {0} datas'.format(cnt))
-            helpers.bulk(es, acts)
+            db.Lativ.insert_many(acts)
             batch_end = time.time()
             batch = batch_end - batch_start
             batchTime.append(batch)
@@ -107,7 +104,7 @@ for d in bulk_config['rec']:
             
             acts = []
     if len(acts) > 0:
-        helpers.bulk(es, acts)
+        db.Lativ.insert_many(acts)
         acts = []
 
 end = time.time()

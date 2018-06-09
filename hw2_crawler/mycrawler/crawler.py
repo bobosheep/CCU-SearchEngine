@@ -33,6 +33,8 @@ def crawler(crawl_config, seen_url, url_pool):
         start = timeit.default_timer()
         
         ##use selenium
+        if not cur_url.startswith('http'):
+            continue
         chrome.get(cur_url)
         time.sleep(crawl_config['delay_time'])
     
@@ -42,7 +44,7 @@ def crawler(crawl_config, seen_url, url_pool):
         find_links = Parser(cur_url, pageSource, crawl_config)
 
         #Url Pool
-        UrlPooling(find_links, url_pool, seen_url, crawl_config)
+        UrlPooling(cur_url, find_links, url_pool, seen_url, crawl_config)
         
         stop = timeit.default_timer()
 
@@ -64,14 +66,16 @@ if __name__ == "__main__":
     crawl_start = timeit.default_timer()
 
     crawl_config = {
-        "delay_time" : 10,
-        "threads" : 10,
+        "delay_time" : 7,
+        "threads" : 25,
         "output_dir" : "./outputdata/",
         "output_file" : "Record1.txt",
         "seenUrl_file" : "seenUrl",
-        "fetch_limit" : 2000,
-        "start_url":['https://www.lativ.com.tw'],
-        "allow_domain": {'lativ.com.tw':'lativ.com.tw'}
+        "fetch_limit" : 5000,
+        "start_url":['https://www.net-fashion.net/', 'https://www.lativ.com.tw/'],
+        "allow_domain": {'www.net-fashion.net':'www.net-fashion.net', 
+                         'www.lativ.com.tw' : 'www.lativ.com.tw'
+                        }
     }
     
     try :
@@ -99,7 +103,7 @@ if __name__ == "__main__":
     threads = [Thread(target=crawler, args=(crawl_config, seen_url, url_pool,)) for i in range(crawl_config['threads'])]
     for t in threads:
         t.daemon = True
-        time.sleep(8)
+        time.sleep(10)
         t.start()
     # or [t.start() for t in threads] if you prefer the inlines
 
