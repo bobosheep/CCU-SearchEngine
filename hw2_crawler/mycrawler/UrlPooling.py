@@ -11,6 +11,7 @@ from scrapy.selector import Selector
 
 def UrlPooling(cur_url, find_links, url_pool, seen_url, crawl_config):
     now_domain = cur_url.split('/')[2]
+    protocol = cur_url.split('/')[0]
     for link in find_links:
         link = link.get('href')
         #print(link)
@@ -37,7 +38,7 @@ def UrlPooling(cur_url, find_links, url_pool, seen_url, crawl_config):
             if link.find('Product') >= 0 and now_domain is 'lativ.com.tw':
                 #lativ.com.tw/Poduct下的資料目前不需要
                 continue
-            link = now_domain + link
+            link = protocol + '//' + now_domain + link
 
 
         if link in seen_url:
