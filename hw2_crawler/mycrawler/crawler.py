@@ -66,15 +66,16 @@ if __name__ == "__main__":
     crawl_start = timeit.default_timer()
 
     crawl_config = {
-        "delay_time" : 7,
-        "threads" : 25,
+        "delay_time" : 10,
+        "threads" : 10,
         "output_dir" : "./outputdata/",
         "output_file" : "Record1.txt",
         "seenUrl_file" : "seenUrl",
-        "fetch_limit" : 5000,
-        "start_url":['https://www.net-fashion.net/', 'https://www.lativ.com.tw/'],
+        "fetch_limit" : 2000,
+        "start_url":['http://www.50-shop.com/Shop/'],
         "allow_domain": {'www.net-fashion.net':'www.net-fashion.net', 
-                         'www.lativ.com.tw' : 'www.lativ.com.tw'
+                         'www.lativ.com.tw' : 'www.lativ.com.tw', 
+                         'www.50-shop.com' : 'www.50-shop.com'
                         }
     }
     
