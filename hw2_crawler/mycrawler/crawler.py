@@ -67,12 +67,12 @@ if __name__ == "__main__":
 
     crawl_config = {
         "delay_time" : 10,
-        "threads" : 10,
+        "threads" : 5,
         "output_dir" : "./outputdata/",
         "output_file" : "Record1.txt",
         "seenUrl_file" : "seenUrl",
-        "fetch_limit" : 2000,
-        "start_url":['http://www.50-shop.com/Shop/'],
+        "fetch_limit" : 400,
+        "start_url":['http://www.50-shop.com/Shop/'], #, 'http://www.50-shop.com/Shop/'
         "allow_domain": {'www.net-fashion.net':'www.net-fashion.net', 
                          'www.lativ.com.tw' : 'www.lativ.com.tw', 
                          'www.50-shop.com' : 'www.50-shop.com'
@@ -104,7 +104,7 @@ if __name__ == "__main__":
     threads = [Thread(target=crawler, args=(crawl_config, seen_url, url_pool,)) for i in range(crawl_config['threads'])]
     for t in threads:
         t.daemon = True
-        time.sleep(10)
+        time.sleep(15)
         t.start()
     # or [t.start() for t in threads] if you prefer the inlines
 

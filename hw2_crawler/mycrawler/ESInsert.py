@@ -8,12 +8,10 @@ from elasticsearch import Elasticsearch
 from elasticsearch import helpers
 import elasticsearch
 import time
-
+import base64
 
 # In[2]:
 es = Elasticsearch()
-record_DOC = 'outputdata/'
-BATCH_SIZE = 4000
 
 
 # In[3]:
@@ -37,10 +35,28 @@ def getInfo(data):
             record['obj_id'] = line[8:]
         elif line.startswith('@img_url:'):
             record['img_url'] = line[9:]
+            record['obj_id'] = base64.urlsafe_b64encode(str.encode(record['img_url'])).decode('ascii')
+            #print(type(record['obj_id']))
         elif line.startswith('@price:'):
-            record['price'] = line[7:]
+            price = line[7:]
+            if price.find(','):
+                price = price.split(',')
+                price = ''.join(price)
+                #print(price)
+                record['price'] = price
+            else:
+                record['price'] = line[7:]
         elif line.startswith('@store_price:'):
-            record['store_price'] = line[13:]
+            price = line[13:]
+            #print(price)
+            if price.find(','):
+                #print('find')
+                price = price.split(',')
+                price = ''.join(price)
+                #Qprint(price)
+                record['store_price'] = price
+            else:
+                record['store_price'] = line[13:]
         elif line.startswith('@color:'):
             record['color'] = line[7:]
         elif line.startswith('@colors:'):
@@ -54,7 +70,7 @@ def getInfo(data):
             arr = line[7:].replace('\'', ',').replace('[', ',').replace(']', ',').split(',')
             for ele in arr :
                 if len(ele) > 0 and ele != ' ' and ele != '\\xa0':
-                    record['sizes'].append(ele)
+                    record['sizes'].append(ele + ' ')
         elif line.startswith('@last_updated:'):     
             record['last_updated'] = line[14:] 
             yield record
@@ -66,14 +82,18 @@ def getInfo(data):
 
 
 cnt = 0
+record_DOC = 'outputdata/'
+BATCH_SIZE = 2000
 
 lativ_record = ['lativ_Record-finish3.txt']
-fiftypercent_record = ['Record1.txt']
+fiftypercent_record = []
+record_data = ['lativ_Record-finish4.txt','lativ_Record-finish5.txt', 'fiftypercent_Record-finish2.txt', 'fiftypercent_Record-finish3.txt']
 
 bulk_config = {
-    "rec" : fiftypercent_record,
+    "rec" : record_data,
     "doc" : record_DOC,
-    "index" : 'clothes',    
+    "index" : 'clothes',  
+    "type" : 'clothes'  
 }
 
 batchTime = []
@@ -89,7 +109,7 @@ for d in bulk_config['rec']:
         #print(rec['sizes'])
         acts.append({
             '_index': bulk_config['index'],
-            '_type': rec['site'],
+            '_type': bulk_config['type'],
             '_id': rec['obj_id'],
             '_source': rec,
         })
@@ -107,8 +127,15 @@ for d in bulk_config['rec']:
             
             acts = []
     if len(acts) > 0:
+        batch_start = time.time()
         helpers.bulk(es, acts)
+        batch_end = time.time()
         acts = []
+        batch = batch_end - batch_start
+        batchTime.append(batch)
+        batchAvg += batch;
+    
+        batchCnt += 1;
 
 end = time.time()
 print(cnt)
